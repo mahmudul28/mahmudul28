@@ -7,7 +7,7 @@
 <div align="center">
   <h2>Mahmudul Hasan</h2>
   <p><i>Electrical & Electronic Engineering</i></p>
-  <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=400&size=18&pause=2000&color=00B4AB&center=true&vCenter=true&width=800&lines=3rd-Year+EEE+Student+at+CUET;Bridging+the+gap+between+Hardware+and+AI;Fascinated+by+the+science+of+the+universe" alt="Typing Greeting" />
+  <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=400&size=18&pause=2000&color=00B4AB&center=true&vCenter=true&width=800&lines=3rd-Year+EEE+Student+at+CUET;Bridging+the+gap+between+Hardware+and+AI" alt="Typing Greeting" />
 </div>
 
 <div align="center">
