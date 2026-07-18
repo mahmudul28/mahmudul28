@@ -17,7 +17,7 @@
   <a href="mailto:mh.mahmudul28@gmail.com" target="_blank">
     <img src="https://img.shields.io/badge/Email-0D1117?style=flat-square&logo=gmail&logoColor=EA4335" alt="Email"/>
   </a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.kaggle.com/mahmudul-hasan" target="_blank">
+  <a href="https://www.kaggle.com/mahmudul28" target="_blank">
     <img src="https://img.shields.io/badge/Kaggle-0D1117?style=flat-square&logo=kaggle&logoColor=20BEFF" alt="Kaggle"/>
   </a>
 </div>
