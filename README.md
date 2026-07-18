@@ -24,7 +24,7 @@
 
 <br>
 
-> 3rd-year EEE student at CUET exploring the intersection of machine learning, deep learning, advanced mathematics & electronics. I enjoy building computational tools, studying circuit design & spending my downtime fascinated by astronomy 7 the physics of the universe.
+> 3rd-year EEE student at CUET exploring the intersection of machine learning, deep learning, advanced mathematics & electronics. I enjoy building computational tools, studying circuit design & spending my downtime fascinated by astronomy & the physics of the universe.
 
 <br>
 
@@ -44,20 +44,20 @@
 <br><br>
 
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=YOUR_ACTUAL_USERNAME_HERE&show_icons=true&bg_color=0D1117&text_color=A9ADC1&icon_color=00B4AB&title_color=00B4AB&hide_border=true&line_height=28" width="48%" alt="GitHub Stats"/> 
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR_ACTUAL_USERNAME_HERE&layout=compact&bg_color=0D1117&text_color=A9ADC1&title_color=00B4AB&hide_border=true" width="48%" alt="Top Languages"/>
+  <img src="https://github-readme-stats.vercel.app/api?username=mahmudul28&show_icons=true&bg_color=0D1117&text_color=A9ADC1&icon_color=00B4AB&title_color=00B4AB&hide_border=true&line_height=28" width="48%" alt="GitHub Stats"/> 
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=mahmudul28&layout=compact&bg_color=0D1117&text_color=A9ADC1&title_color=00B4AB&hide_border=true" width="48%" alt="Top Languages"/>
 </div>
 
 <br>
 
 <div align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=YOUR_ACTUAL_USERNAME_HERE&theme=tokyonight&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB&hide_border=true" alt="GitHub Streak" />
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=mahmudul28&theme=tokyonight&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB&hide_border=true" alt="GitHub Streak" />
 </div>
 
 <br>
 
 <div align="center">
-  <img src="https://komarev.com/ghpvc/?username=YOUR_ACTUAL_USERNAME_HERE&label=PROFILE+VIEWS&color=00B4AB&style=flat-square" alt="Profile Views" />
+  <img src="https://komarev.com/ghpvc/?username=mahmudul28&label=PROFILE+VIEWS&color=00B4AB&style=flat-square" alt="Profile Views" />
 </div>
 
 <br><br><br>
