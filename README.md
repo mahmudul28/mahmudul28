@@ -56,12 +56,9 @@
 
 <br>
 
-<div align="center">
-  <img src="https://komarev.com/ghpvc/?username=mahmudul28&label=PROFILE+VIEWS&color=00B4AB&style=flat-square" alt="Profile Views" />
-</div>
 
-<br><br><br>
+<br><br>
 
 <p align="center">
-  <font color="#555555"><i>"Admiration is the emotion furthest from understanding."</i></font>
+  <code><font size="2" color="#555555"><i>Admiration is the emotion furthest from understanding.</i></font></code>
 </p>
