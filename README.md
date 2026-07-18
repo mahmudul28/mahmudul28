@@ -44,14 +44,14 @@
 <br><br>
 
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=mahmudul28&show_icons=true&bg_color=0D1117&text_color=A9ADC1&icon_color=00B4AB&title_color=00B4AB&hide_border=true&line_height=28" width="48%" alt="GitHub Stats"/> 
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=mahmudul28&layout=compact&bg_color=0D1117&text_color=A9ADC1&title_color=00B4AB&hide_border=true" width="48%" alt="Top Languages"/>
+  <img src="https://github-readme-stats.vercel.app/api?username=mahmudul28&show_icons=true&bg_color=0D1117&text_color=A9ADC1&icon_color=00B4AB&title_color=00B4AB&hide_border=true&line_height=28&v=1" width="48%" alt="GitHub Stats"/> 
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=mahmudul28&layout=compact&bg_color=0D1117&text_color=A9ADC1&title_color=00B4AB&hide_border=true&v=1" width="48%" alt="Top Languages"/>
 </div>
 
 <br>
 
 <div align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=mahmudul28&theme=tokyonight&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB&hide_border=true" alt="GitHub Streak" />
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=mahmudul28&theme=tokyonight&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB&hide_border=true&v=1" alt="GitHub Streak" />
 </div>
 
 <br>
