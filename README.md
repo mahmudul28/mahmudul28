@@ -61,9 +61,9 @@
     alt="GitHub Streak"
   />
   <br><br>
-  <!-- Dynamic Language Stats Card (Automatically calculates your real profile percentages) -->
+  <!-- New Extended Stats Provider -->
   <img
-    src="https://github-readme-stats.vercel.app/api/top-langs/?username=mahmudul28&layout=compact&theme=tokyonight&hide_border=true"
+    src="https://github-stats-extended.vercel.app/api/top-langs/?username=mahmudul28&layout=compact&theme=tokyonight&hide_border=true&langs_count=4"
     alt="GitHub Language Stats"
   />
 </div>
