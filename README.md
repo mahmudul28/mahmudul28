@@ -43,13 +43,16 @@
 
 <br><br>
 
+
 <div align="center">
   <!-- Floating Neural/Cosmic Particle Animation -->
-  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="100%" alt="Divider" />
-  <br><br>
-  <img src="https://user-images.githubusercontent.com/73097560/115834491-dc3bda00-a447-11eb-9642-1e434f6b0f34.gif" width="70%" alt="Floating Cosmic Neural Network" />
-  <br><br>
-  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="100%" alt="Divider" />
+  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="Divider" />
+  
+  <p align="center">
+    <img src="https://user-images.githubusercontent.com/73097560/115834491-dc3bda00-a447-11eb-9642-1e434f6b0f34.gif" width="600" alt="Floating Cosmic Neural Network" />
+  </p>
+  
+  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="Divider" />
 </div>
 
 <br><br>
