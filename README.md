@@ -1,5 +1,6 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/username/repository_name/main/path/to/image_0.png" width="100%" alt="Modern Glass Network Banner" />
+  <!-- Replaced the broken placeholder with a real, static, high-res tech background -->
+  <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" height="250" width="100%" style="object-fit: cover;" alt="Modern Glass Network Banner" />
 </div>
 
 <br>
@@ -50,8 +51,9 @@
     alt="GitHub Streak"
   />
   <br><br>
+  <!-- Swapped to a more stable alternative provider for the language stats -->
   <img
-    src="https://github-readme-stats.vercel.app/api/top-langs/?username=mahmudul28&layout=compact&theme=tokyonight&hide_border=true&langs_count=8"
+    src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=mahmudul28&theme=tokyonight"
     alt="GitHub Language Stats"
   />
 </div>
