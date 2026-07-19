@@ -54,38 +54,18 @@
 
 <br><br><br>
 
-<!-- Custom Language Statistics & GitHub Streak Section -->
+<!-- Stats Section -->
 <div align="center">
   <img
     src="https://streak-stats.demolab.com?user=mahmudul28&theme=tokyonight&hide_border=true&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB"
     alt="GitHub Streak"
   />
-  
-  <br><br><br>
-  
-  <h4>Profile Language Metrics</h4>
-  
-  <!-- Custom flawless language distribution bar -->
-  <svg width="400" height="8" viewBox="0 0 100 8" xmlns="http://www.w3.org/2000/svg">
-    <g fill-rule="evenodd">
-      <!-- MATLAB: 40% (Orange) -->
-      <path d="M3,0 h37 v8 h-37 a3,3 0 0 1 -3,-3 a3,3 0 0 1 3,-3" fill="#e16737"/>
-      <!-- C++: 25% (Pink/Red) -->
-      <rect x="40" y="0" width="25" height="8" fill="#f34b7d"/>
-      <!-- C: 20% (Dark Gray) -->
-      <rect x="65" y="0" width="20" height="8" fill="#555555"/>
-      <!-- Jupyter Notebook: 15% (Jupyter Orange) -->
-      <path d="M85,0 h12 a3,3 0 0 1 3,3 a3,3 0 0 1 -3,3 h-12 z" fill="#DA5B0B"/>
-    </g>
-  </svg>
-  
   <br><br>
-  
-  <!-- Legend badges matching the bar perfectly -->
-  <img src="https://img.shields.io/badge/MATLAB-40%25-e16737?style=flat-square" alt="MATLAB"/>
-  <img src="https://img.shields.io/badge/C++-25%25-f34b7d?style=flat-square" alt="C++"/>
-  <img src="https://img.shields.io/badge/C-20%25-555555?style=flat-square" alt="C"/>
-  <img src="https://img.shields.io/badge/Jupyter_Notebook-15%25-DA5B0B?style=flat-square" alt="Jupyter Notebook"/>
+  <!-- Dynamic Language Stats Card (Automatically calculates your real profile percentages) -->
+  <img
+    src="https://github-readme-stats.vercel.app/api/top-langs/?username=mahmudul28&layout=compact&theme=tokyonight&hide_border=true"
+    alt="GitHub Language Stats"
+  />
 </div>
 
 <br><br><br>
