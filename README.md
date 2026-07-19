@@ -43,18 +43,22 @@
 
 <br><br>
 
+<br>
+
+<br>
+
 <div align="center">
-  <img
-    src="https://github-readme-stats.vercel.app/api?username=mahmudul28&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=00B4AB&icon_color=00B4AB&text_color=A9ADC1&count_private=true&cache_seconds=1800"
-    width="48%"
-    alt="Mahmudul's GitHub Stats"
-  />
-  <img
-    src="https://github-readme-stats.vercel.app/api/top-langs/?username=mahmudul28&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=00B4AB&text_color=A9ADC1&langs_count=8&cache_seconds=1800"
-    width="48%"
-    alt="Top Languages"
-  />
+  <!-- Dynamic Custom-Colored Contribution Graph -->
+  <img src="https://ghchart.rshah.org/00B4AB/mahmudul28" alt="GitHub Contribution Chart" width="80%" />
 </div>
+
+<br>
+
+<div align="center">
+  <!-- GitHub Streak Card (Hosted on Heroku, unaffected by the crash) -->
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=mahmudul28&theme=tokyonight&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB&hide_border=true" alt="GitHub Streak" />
+</div>
+
 
 <br>
 
