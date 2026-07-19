@@ -54,12 +54,6 @@
 
 <br>
 
-<div align="center">
-  <!-- GitHub Streak Card (Hosted on Heroku, unaffected by the crash) -->
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=mahmudul28&theme=tokyonight&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB&hide_border=true" alt="GitHub Streak" />
-</div>
-
-
 <br>
 
 <div align="center">
