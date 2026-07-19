@@ -1,6 +1,16 @@
 <div align="center">
-  <!-- Replaced the broken placeholder with a real, static, high-res tech background -->
-  <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" height="250" width="100%" style="object-fit: cover;" alt="Modern Glass Network Banner" />
+  <!-- Advanced static pen-drawn divider line -->
+  <svg width="100%" height="2" viewBox="0 0 800 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 1H800" stroke="url(#lineGradient)" stroke-width="1.5"/>
+    <defs>
+      <linearGradient id="lineGradient" x1="0" y1="0" x2="800" y2="0" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#00B4AB" stop-opacity="0"/>
+        <stop offset="0.2" stop-color="#00B4AB"/>
+        <stop offset="0.8" stop-color="#00B4AB"/>
+        <stop offset="1" stop-color="#00B4AB" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+  </svg>
 </div>
 
 <br>
@@ -44,18 +54,38 @@
 
 <br><br><br>
 
-<!-- Stats Section -->
+<!-- Custom Language Statistics & GitHub Streak Section -->
 <div align="center">
   <img
     src="https://streak-stats.demolab.com?user=mahmudul28&theme=tokyonight&hide_border=true&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB"
     alt="GitHub Streak"
   />
+  
+  <br><br><br>
+  
+  <h4>Profile Language Metrics</h4>
+  
+  <!-- Custom flawless language distribution bar -->
+  <svg width="400" height="8" viewBox="0 0 100 8" xmlns="http://www.w3.org/2000/svg">
+    <g fill-rule="evenodd">
+      <!-- MATLAB: 40% (Orange) -->
+      <path d="M3,0 h37 v8 h-37 a3,3 0 0 1 -3,-3 a3,3 0 0 1 3,-3" fill="#e16737"/>
+      <!-- C++: 25% (Pink/Red) -->
+      <rect x="40" y="0" width="25" height="8" fill="#f34b7d"/>
+      <!-- C: 20% (Dark Gray) -->
+      <rect x="65" y="0" width="20" height="8" fill="#555555"/>
+      <!-- Jupyter Notebook: 15% (Jupyter Orange) -->
+      <path d="M85,0 h12 a3,3 0 0 1 3,3 a3,3 0 0 1 -3,3 h-12 z" fill="#DA5B0B"/>
+    </g>
+  </svg>
+  
   <br><br>
-  <!-- Swapped to a more stable alternative provider for the language stats -->
-  <img
-    src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=mahmudul28&theme=tokyonight"
-    alt="GitHub Language Stats"
-  />
+  
+  <!-- Legend badges matching the bar perfectly -->
+  <img src="https://img.shields.io/badge/MATLAB-40%25-e16737?style=flat-square" alt="MATLAB"/>
+  <img src="https://img.shields.io/badge/C++-25%25-f34b7d?style=flat-square" alt="C++"/>
+  <img src="https://img.shields.io/badge/C-20%25-555555?style=flat-square" alt="C"/>
+  <img src="https://img.shields.io/badge/Jupyter_Notebook-15%25-DA5B0B?style=flat-square" alt="Jupyter Notebook"/>
 </div>
 
 <br><br><br>
