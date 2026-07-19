@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" alt="Animated Cosmic Network Background" />
+  <img src="https://raw.githubusercontent.com/username/repository_name/main/path/to/image_0.png" width="100%" alt="Modern Glass Network Banner" />
 </div>
 
 <br>
@@ -41,25 +41,18 @@
   <img src="https://img.shields.io/badge/-Cadence%20AWR-00599C?style=for-the-badge&logo=cadence&logoColor=white&labelColor=101010" alt="Cadence AWR"/>
 </div>
 
-<br><br>
+<br><br><br>
 
-<div align="center">
-  <!-- Floating Neural/Cosmic Particle Animation -->
-  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="Divider" />
-  
-  <p align="center">
-    <img src="https://user-images.githubusercontent.com/73097560/115834491-dc3bda00-a447-11eb-9642-1e434f6b0f34.gif" width="600" alt="Floating Cosmic Neural Network" />
-  </p>
-  
-  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="Divider" />
-</div>
-
-<br><br>
-
+<!-- Stats Section -->
 <div align="center">
   <img
     src="https://streak-stats.demolab.com?user=mahmudul28&theme=tokyonight&hide_border=true&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB"
     alt="GitHub Streak"
+  />
+  <br><br>
+  <img
+    src="https://github-readme-stats.vercel.app/api/top-langs/?username=mahmudul28&layout=compact&theme=tokyonight&hide_border=true&langs_count=8"
+    alt="GitHub Language Stats"
   />
 </div>
 
