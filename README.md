@@ -43,11 +43,16 @@
 
 <br><br>
 
-<br>
+<div align="center">
+  <!-- Floating Neural/Cosmic Particle Animation -->
+  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="100%" alt="Divider" />
+  <br><br>
+  <img src="https://user-images.githubusercontent.com/73097560/115834491-dc3bda00-a447-11eb-9642-1e434f6b0f34.gif" width="70%" alt="Floating Cosmic Neural Network" />
+  <br><br>
+  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="100%" alt="Divider" />
+</div>
 
-<br>
-
-
+<br><br>
 
 <div align="center">
   <img
@@ -56,10 +61,7 @@
   />
 </div>
 
-<br>
-
-
-<br><br>
+<br><br><br>
 
 <p align="center">
   <code><font size="2" color="#555555"><i>Admiration is the emotion furthest from understanding.</i></font></code>
