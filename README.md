@@ -47,14 +47,7 @@
 
 <br>
 
-<div align="center">
-  <!-- Dynamic Custom-Colored Contribution Graph -->
-  <img src="https://ghchart.rshah.org/00B4AB/mahmudul28" alt="GitHub Contribution Chart" width="80%" />
-</div>
 
-<br>
-
-<br>
 
 <div align="center">
   <img
