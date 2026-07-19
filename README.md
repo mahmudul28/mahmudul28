@@ -33,12 +33,12 @@
 </div>
 <br>
 <div align="center">
-  <img src="https://img.shields.io/badge/Env-MATLAB-0076A8?style=for-the-badge&logo=mathworks&logoColor=white&labelColor=101010" alt="MATLAB"/> 
-  <img src="https://img.shields.io/badge/Code-Assembly-6E40C9?style=for-the-badge&logo=nasm&logoColor=white&labelColor=101010" alt="Assembly"/> 
-  <img src="https://img.shields.io/badge/Sim-Proteus-00B4AB?style=for-the-badge&logo=microchip&logoColor=white&labelColor=101010" alt="Proteus"/> 
-  <img src="https://img.shields.io/badge/Sim-PSpice-007EC6?style=for-the-badge&labelColor=101010" alt="PSpice"/> 
-  <img src="https://img.shields.io/badge/RF-Keysight_ADS-EA4335?style=for-the-badge&labelColor=101010" alt="Keysight ADS"/> 
-  <img src="https://img.shields.io/badge/RF-Cadence_AWR-00599C?style=for-the-badge&logo=cadence&logoColor=white&labelColor=101010" alt="Cadence AWR"/>
+  <img src="https://img.shields.io/badge/-MATLAB-0076A8?style=for-the-badge&logo=mathworks&logoColor=white&labelColor=101010" alt="MATLAB"/> 
+  <img src="https://img.shields.io/badge/-Assembly-6E40C9?style=for-the-badge&logo=nasm&logoColor=white&labelColor=101010" alt="Assembly"/> 
+  <img src="https://img.shields.io/badge/-Proteus-00B4AB?style=for-the-badge&logo=microchip&logoColor=white&labelColor=101010" alt="Proteus"/> 
+  <img src="https://img.shields.io/badge/-PSpice-007EC6?style=for-the-badge&labelColor=101010" alt="PSpice"/> 
+  <img src="https://img.shields.io/badge/-Keysight%20ADS-EA4335?style=for-the-badge&labelColor=101010" alt="Keysight ADS"/> 
+  <img src="https://img.shields.io/badge/-Cadence%20AWR-00599C?style=for-the-badge&logo=cadence&logoColor=white&labelColor=101010" alt="Cadence AWR"/>
 </div>
 
 <br><br>
