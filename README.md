@@ -57,7 +57,7 @@
 <!-- Stats Section -->
 <div align="center">
   <img
-    src="https://streak-stats.demolab.com?user=mahmudul28&theme=tokyonight&hide_border=true&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB"
+    src="https://github-readme-streak-stats.herokuapp.com/?user=mahmudul28&theme=tokyonight&hide_border=true&background=0D1117&ring=00B4AB&fire=00B4AB&currStreakLabel=00B4AB"
     alt="GitHub Streak"
   />
   <br><br>
