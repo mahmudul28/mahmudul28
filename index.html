@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1KL4HCR2PK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-1KL4HCR2PK');
+  </script>
+
+  <title>Mahmudul Hasan — Electrical & Electronic Engineering</title>
+  <meta name="description" content="Mahmudul Hasan — Electrical & Electronic Engineering student and researcher working across signals, electronics, machine learning, biomedical systems and photonics." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://mahmudul28.io/" />
+
+  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mahmudul Hasan" />
+  <meta property="og:title" content="Mahmudul Hasan — Electrical & Electronic Engineering" />
+  <meta property="og:description" content="Mahmudul Hasan — Electrical & Electronic Engineering student and researcher working across signals, electronics, machine learning, biomedical systems and photonics." />
+  <meta property="og:url" content="https://mahmudul28.io/" />
+  <meta property="og:image" content="https://mahmudul28.io/assets/social-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mahmudul Hasan — Electrical & Electronic Engineering" />
+  <meta name="twitter:description" content="Mahmudul Hasan — Electrical & Electronic Engineering student and researcher working across signals, electronics, machine learning, biomedical systems and photonics." />
+  <meta name="twitter:image" content="https://mahmudul28.io/assets/social-preview.jpg" />
+
+  <!-- Structured data: static site-level facts. A richer Person block
+       (job title, bio, email, social links) is injected at runtime by
+       js/main.js once data/profile.js has loaded, so it always matches
+       the single source of truth instead of being hand-duplicated here. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Mahmudul Hasan — Portfolio",
+    "url": "https://mahmudul28.io/",
+    "inLanguage": "en"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- All page content is rendered from /data by js/main.js. This
+       fallback only ever appears with JavaScript disabled (browsers
+       skip <noscript> content entirely once scripting is available),
+       so it never shows on the live site for ordinary visitors. -->
+  <noscript>
+    <div class="noscript-fallback">
+      <p class="noscript-fallback-name">Mahmudul Hasan</p>
+      <p>Electrical &amp; Electronic Engineering student and researcher working across signals, electronics, machine learning, biomedical systems and photonics.</p>
+      <p>This site needs JavaScript enabled to display the full portfolio. You can also <a href="assets/cv.pdf">download the CV</a> directly.</p>
+    </div>
+  </noscript>
+
+  <!-- background atmosphere -->
+  <canvas id="field-canvas" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- custom cursor (desktop only, see js/main.js) -->
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <!-- navigation -->
+  <header class="nav" id="nav">
+    <a href="#home" class="nav-mark">MAHMUDUL HASAN</a>
+    <nav>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#competitions">Competitions</a></li>
+        <li id="nav-achievements-item"><a href="#achievements">Achievements</a></li>
+        <li id="nav-coursework-item"><a href="#coursework">Coursework</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Mobile menu lives OUTSIDE .nav on purpose: .nav uses transform +
+       backdrop-filter for the floating capsule effect, and either one
+       makes an ancestor a new containing block for position:fixed
+       children — which would size this full-screen overlay against
+       the small capsule instead of the viewport. Populated by JS from
+       the desktop nav-links, so there's still one source of truth. -->
+  <div class="mobile-nav" id="mobile-nav"></div>
+
+  <div class="wrap">
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="container">
+        <p class="hero-eyebrow" id="hero-eyebrow"></p>
+        <h1 class="hero-name" id="hero-name">Mahmudul Hasan</h1>
+        <p class="hero-field" id="hero-field"></p>
+        <p class="hero-tagline" id="hero-tagline"></p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" id="hero-cv" href="assets/cv.pdf" download>Download CV</a>
+          <a class="btn" id="hero-github" href="#" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="hero-meta" id="hero-meta" aria-label="Quick facts"></div>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <span class="hero-scroll-line"></span>
+        <span>SCROLL</span>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <p class="section-label" data-label="About">About</p>
+        <div class="about-composition">
+          <h2 class="about-headline reveal" id="about-headline"></h2>
+          <div class="about-side reveal">
+            <p class="about-text" id="about-text"></p>
+            <p class="about-meta" id="about-meta"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section id="research">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-label" data-label="Research">Research</p>
+          <h2 class="section-title">Ongoing work</h2>
+        </div>
+        <div class="research-list" id="research-list"></div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-label" data-label="Projects">Projects</p>
+          <h2 class="section-title">Selected builds</h2>
+        </div>
+        <div id="projects-feature"></div>
+        <div class="project-more" id="projects-more"></div>
+        <a href="#" class="view-all" id="projects-view-all" hidden>View all</a>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-label" data-label="Skills">Skills</p>
+          <h2 class="section-title">Working across</h2>
+        </div>
+        <div class="skills-composition" id="skills-composition"></div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-label" data-label="Education">Education</p>
+          <h2 class="section-title">Background</h2>
+        </div>
+        <div class="education-list" id="education-list"></div>
+      </div>
+    </section>
+
+    <!-- COMPETITIONS -->
+    <section id="competitions">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-label" data-label="Competitions">Competitions</p>
+          <h2 class="section-title">Taking part</h2>
+        </div>
+        <div class="competitions-list" id="competitions-list"></div>
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS (hidden entirely if data/achievements.js is empty) -->
+    <section id="achievements" hidden>
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-label" data-label="Achievements">Achievements</p>
+          <h2 class="section-title">Recognition</h2>
+        </div>
+        <div class="achievements-list" id="achievements-list"></div>
+        <a href="#" class="view-all" id="achievements-view-all" hidden>View all</a>
+      </div>
+    </section>
+
+    <!-- COURSEWORK & LAB (hidden entirely if data/coursework.js is empty) -->
+    <section id="coursework" hidden>
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-label" data-label="Coursework &amp; Lab">Coursework &amp; Lab</p>
+          <h2 class="section-title">Trained on</h2>
+        </div>
+        <div class="cl-split" id="coursework-split"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="container contact-inner">
+        <div class="section-head reveal">
+          <p class="section-label" data-label="Contact">Contact</p>
+          <h2 class="section-title">Get in touch</h2>
+        </div>
+        <p class="contact-sentence">Open to research collaboration and relevant opportunities.</p>
+        <a class="contact-email" id="contact-email" href="#"></a>
+        <div class="contact-socials" id="contact-socials"></div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <span id="footer-name"></span>
+        <a href="#home">Back to top</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

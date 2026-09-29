@@ -1,0 +1,2335 @@
+
+:root {
+  /* -- color: background -- */
+  --bg: #05070a;
+  --bg-raised: #0a0e15;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-strong: rgba(255, 255, 255, 0.06);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-soft: rgba(255, 255, 255, 0.05);
+
+  /* -- color: ink (text hierarchy — use consistently, don't default to --ink) -- */
+  --ink: #eef1f6;        /* primary — names, active headings */
+  --ink-dim: #a7b0bd;    /* secondary — item text, body copy: must stay readable */
+  --ink-faint: #737c89;  /* tertiary — labels, metadata, tags only, never a whole skill/item */
+
+  /* -- color: accent -- */
+  --cyan: #52e3ff;
+  --violet: #a78bfa;
+  --cyan-dim: rgba(82, 227, 255, 0.14);
+  --violet-dim: rgba(167, 139, 250, 0.14);
+
+
+  --font-display: "Space Grotesk", Georgia, "Times New Roman", serif;
+  --font-body: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.25rem;
+  --space-5: 3.75rem;
+  --space-6: 6rem;
+  --space-7: 9rem;
+
+  /* -- layout -- */
+  --gutter: clamp(1.5rem, 5vw, 6rem);
+  --content-max: 1280px;
+  --radius: 3px;
+
+  /* -- motion -- */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.3s;
+  --dur-med: 0.6s;
+  --dur-slow: 1s;
+}
+
+/* ==========================================================
+   RESET
+   ========================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--cyan);
+  color: #04121a;
+}
+
+/* Author rules elsewhere set `display` on classes like .btn / .view-all,
+   which would otherwise silently override the `hidden` attribute (the
+   UA stylesheet's [hidden]{display:none} loses to any author rule with
+   equal specificity). Keep this rule authoritative. */
+[hidden] {
+  display: none !important;
+}
+
+/* Visible keyboard focus */
+a:focus-visible,
+button:focus-visible {
+  outline: 1.5px solid var(--cyan);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Only ever rendered with JavaScript disabled (see the <noscript>
+   block in index.html) — never seen on the live, scripted site. */
+.noscript-fallback {
+  max-width: 640px;
+  margin: 4rem auto;
+  padding: 0 var(--gutter);
+}
+
+.noscript-fallback a {
+  color: var(--cyan);
+  text-decoration: underline;
+}
+
+.noscript-fallback-name {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* "View all" rows/cards beyond the initial preview are rendered into
+   the DOM immediately (for crawlability) but kept out of layout until
+   the "View all" control removes this class. Purely a visibility
+   toggle — no visual difference from the previous click-to-append
+   behavior. */
+.project-row.is-overflow,
+.achievement-item.is-overflow {
+  display: none;
+}
+
+/* ==========================================================
+   BACKGROUND CANVAS + GRAIN
+   ========================================================== */
+#field-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================
+   CUSTOM CURSOR
+   ========================================================== */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 200;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--cyan);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(82, 227, 255, 0.4);
+  transition: width var(--dur-fast) var(--ease), height var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+}
+
+.cursor-ring.is-magnetic {
+  width: 58px;
+  height: 58px;
+  border-color: var(--cyan);
+}
+
+body.no-fine-cursor .cursor-dot,
+body.no-fine-cursor .cursor-ring {
+  display: none;
+}
+
+/* ==========================================================
+   LAYOUT PRIMITIVES
+   ========================================================== */
+.wrap {
+  position: relative;
+  z-index: 2;
+}
+
+.container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+section {
+  position: relative;
+  padding-block: var(--space-6);
+}
+
+/* A soft, center-fading seam instead of a hard edge-to-edge rule —
+   sections read as one continuous surface (and the background field
+   keeps showing through) rather than stacked, isolated blocks. */
+section:not(:first-of-type)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line) 50%, transparent);
+}
+
+/* A single low-amplitude pulse riding the seam hairline above — the
+   same signal geometry used under section titles (.signal-trace),
+   scaled down and quieted further, so the two read as one system
+   rather than two unrelated devices. stroke-dasharray + an infinite
+   dashoffset shift give it a slow, continuous "live feed" motion —
+   this is the one place the signal is genuinely always moving,
+   which is what ties the page's transitions together as you scroll,
+   rather than a static divider you cross once. Injected by
+   js/main.js initSeamTraces(). */
+.seam-trace {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  opacity: 0.32;
+  overflow: visible;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+}
+
+.seam-trace path {
+  stroke-dasharray: 2 7;
+  animation: seam-flow 9s linear infinite;
+}
+
+@keyframes seam-flow {
+  to {
+    stroke-dashoffset: -180;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seam-trace path {
+    animation: none;
+  }
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: var(--space-5);
+}
+
+/* L5 — metadata: smallest, quietest thing on the page */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65em;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  margin-bottom: 0.9em;
+}
+
+.section-label::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  background: var(--cyan);
+}
+
+/* L1 — major section title: the largest, most confident type on the
+   page after the hero name. Distinct from item titles (L2) by scale,
+   weight AND letter-spacing, not just a couple of pixels. */
+.section-title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+/* Two devices reserved exclusively for L1 section titles — a
+   line crossing through the text, and a light shimmer sweep —
+   so nothing else on the page ever gets mistaken for "the top of
+   the hierarchy," even when a category name nearby is a similar
+   size/weight. Both are driven by the .title-animate class (see
+   js/main.js initTitleAnimations) and REPLAY every time the
+   section scrolls back into view, not just once on first load. */
+/* The trace is a real inline <svg> (injected by js/main.js
+   initSignalTraces), not a background-image. It's built in actual
+   pixel units to match each title's measured width, so the pulse
+   geometry stays constant instead of stretching/distorting when a
+   short title ("About") and a long one ("Coursework & Lab") share
+   the same path — a fixed-width oscilloscope reading rather than a
+   rubber-banded graphic. Reveal is a genuine stroke draw-on
+   (dasharray/dashoffset) instead of a scaleX stretch, so it reads
+   as the trace being captured left-to-right, not a box widening.
+   Triggered by the same .title-animate lifecycle as the shimmer,
+   in js/main.js initTitleAnimations. */
+.signal-trace {
+  position: absolute;
+  top: 52%;
+  left: -6vw;
+  z-index: -1;
+  opacity: 0.55;
+  overflow: visible;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+.signal-trace path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.3s var(--ease) 0.15s;
+}
+
+/* Shimmer is intentionally a SEPARATE, temporary class (removed by
+   JS once the sweep finishes) rather than staying applied — that
+   way the resting text is always plain solid var(--ink), and never
+   depends on a gradient/background-position value holding "correct"
+   indefinitely. */
+.section-title.title-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    var(--ink) 0%,
+    var(--ink) 40%,
+    #ffffff 48%,
+    #bdf4ff 50%,
+    #ffffff 52%,
+    var(--ink) 60%,
+    var(--ink) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  background-position: 200% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: title-shimmer 1.7s linear;
+}
+
+@keyframes title-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.section-head .section-title {
+  margin: 0;
+}
+
+/* reveal-on-scroll target */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================
+   NAVIGATION
+   ========================================================== */
+/* A slim, floating control layer — inset from the edges rather
+   than a full-bleed bar, so it never competes with the name or
+   section titles for visual weight. */
+.nav {
+  position: fixed;
+  top: 1.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: min(94%, 1180px);
+  padding: 0.7rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 999px;
+  background: rgba(8, 11, 16, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px) saturate(140%);
+  transition: background var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease),
+    box-shadow var(--dur-med) var(--ease);
+}
+
+.nav.is-scrolled {
+  background: rgba(8, 11, 16, 0.6);
+  border-color: var(--line);
+  box-shadow: 0 12px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+.nav-mark {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  opacity: 0.9;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.nav-links a {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+  transition: color var(--dur-med) var(--ease);
+  padding-bottom: 2px;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--cyan);
+  opacity: 0;
+  transform: translateX(-50%) scale(0.4);
+  transition: opacity var(--dur-med) var(--ease), transform var(--dur-med) var(--ease);
+}
+
+.nav-links a:hover,
+.nav-links a.is-active {
+  color: var(--ink);
+}
+
+.nav-links a:hover::after,
+.nav-links a.is-active::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  z-index: 110;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--ink);
+  transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+}
+
+/* Hidden by default — this is the mobile full-screen menu. It only
+   gets shown (and turned into a fixed overlay) inside the mobile
+   breakpoint below. Without this rule it renders as a plain, unstyled
+   block of links at the top of the page on every larger screen. */
+.mobile-nav {
+  display: none;
+}
+
+/* ==========================================================
+   HERO
+   ========================================================== */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-5);
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-3);
+}
+
+.hero-name {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  max-width: 16ch;
+}
+
+/* keeps each word intact as a unit — a line can wrap BETWEEN
+   words, never in the middle of one. The clip-path is the
+   "mask" the word rises out of during the entrance (see below);
+   it is generous on every side so nothing is ever cropped, and
+   it is removed entirely once the entrance has finished. */
+.hero-name-word {
+  display: inline-block;
+  white-space: nowrap;
+  clip-path: inset(-0.3em -0.3em -0.2em -0.3em);
+}
+
+/* Entrance: each word rises out of an invisible line, one after
+   the other, easing to a stop — a soft blur clears and the
+   opacity comes up a little ahead of the movement, so the name
+   is legible almost as soon as it starts to move. Two separate
+   animations (movement, and focus/fade) so each keeps one
+   smooth easing curve instead of restarting it at every
+   keyframe. Plays once, when the page loads (see js/main.js
+   initHeroNameAnimation). The delay between words is the
+   --i variable set by JS multiplied by the 0.11s below. */
+.hero-name-inner {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(135%);
+  filter: blur(6px);
+}
+
+.hero-name.name-animate .hero-name-inner {
+  animation:
+    name-rise 1.3s cubic-bezier(0.22, 1, 0.36, 1) both,
+    name-focus 0.95s cubic-bezier(0.33, 1, 0.68, 1) both;
+  animation-delay: calc(0.05s + var(--i, 0) * 0.11s);
+}
+
+@keyframes name-rise {
+  from {
+    transform: translateY(135%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes name-focus {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Once the entrance has finished, every trace of it is removed
+   (mask, transform, filter), so the name at rest is plain,
+   crisp, solid text exactly like any other heading. */
+.hero-name.name-done .hero-name-word {
+  clip-path: none;
+}
+
+.hero-name.name-done .hero-name-inner {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-name-word {
+    clip-path: none;
+  }
+  .hero-name-inner {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .hero-name.name-animate .hero-name-inner {
+    animation: none;
+  }
+}
+
+.hero-field {
+  margin-top: var(--space-3);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(1.05rem, 2vw, 1.4rem);
+  color: var(--ink-dim);
+  max-width: 40ch;
+}
+
+.hero-tagline {
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--cyan);
+}
+
+.hero-actions {
+  margin-top: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  padding: 0.85em 1.4em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.btn:hover {
+  border-color: var(--cyan);
+  transform: translateY(-1px);
+}
+
+.btn-solid {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.btn-solid:hover {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #04121a;
+}
+
+/* Compact technical metadata / notation block — reads as a data
+   readout under the hero, not another content section. Deliberately
+   plain: no pills, no per-item borders or backgrounds, uniform
+   quiet color, separated by a hairline "tick" rather than visual
+   weight. Sits well below --ink-faint's usual label duty so it
+   never competes with .hero-tagline (which is the cyan accent
+   line) or the name above it. */
+.hero-meta {
+  margin-top: var(--space-4);
+  padding-left: 0.9em;
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  max-width: 42ch;
+}
+
+.hero-meta-line {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
+
+/* a short tick mark at the start of each line — same visual grammar
+   as .section-label's short cyan dash, scaled down and desaturated
+   so it stays in the background */
+.hero-meta-line::before {
+  content: "";
+  position: absolute;
+  left: -0.9em;
+  top: 0.65em;
+  width: 5px;
+  height: 1px;
+  background: var(--ink-faint);
+  opacity: 0.7;
+}
+
+.hero-scroll {
+  position: absolute;
+  left: var(--gutter);
+  bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(to bottom, var(--ink-faint), transparent);
+  animation: scroll-pulse 2.4s var(--ease) infinite;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+/* ==========================================================
+   ABOUT — one large typographic statement (L2), with a quieter
+   supporting column (L3/L4). No card, no border.
+   ========================================================== */
+.about-composition {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.85fr);
+  gap: var(--space-5);
+  align-items: end;
+}
+
+/* L2 — the section's primary statement: bold and large, but a
+   clear step down from the hero name and a different treatment
+   than an L1 section-title (sentence case, tighter measure). */
+.about-headline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  max-width: 14ch;
+}
+
+.about-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* L3 — supporting information */
+.about-text {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ink-dim);
+  max-width: 42ch;
+}
+
+/* L4 — quiet factual detail */
+.about-meta {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-faint);
+  max-width: 42ch;
+}
+
+/* ==========================================================
+   RESEARCH / COMPETITIONS — each entry is its own quiet panel:
+   soft surface + thin border, not a divided list. Flex-based
+   (not grid) so the media thumbnail wraps naturally on narrow
+   screens without needing per-breakpoint column overrides.
+   ========================================================== */
+.research-list,
+.competitions-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.research-item,
+.competition-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: background var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease),
+    transform var(--dur-med) var(--ease);
+}
+
+.research-item:hover,
+.competition-item:hover {
+  background: var(--surface-strong);
+  border-color: var(--cyan-dim);
+  transform: translateY(-3px);
+}
+
+.research-item-main,
+.competition-item-main {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+/* L5 — decorative index, quiet by default, warms on hover */
+.research-index,
+.competition-index {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  color: var(--line);
+  letter-spacing: -0.02em;
+  transition: color var(--dur-med) var(--ease);
+  flex: 0 0 auto;
+}
+
+.research-item:hover .research-index,
+.competition-item:hover .competition-index {
+  color: var(--cyan-dim);
+}
+
+.research-content,
+.competition-content {
+  min-width: 0;
+}
+
+/* L2 — item title */
+.research-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  max-width: 70ch;
+}
+
+.competition-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  max-width: 46ch;
+}
+
+/* when a certificate is attached, the title itself becomes the
+   link — understated until hovered, with a small arrow so it's
+   still discoverable as a link */
+.research-title a,
+.competition-title a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-med) var(--ease), color var(--dur-med) var(--ease);
+}
+
+.research-title a:hover,
+.competition-title a:hover {
+  color: var(--cyan);
+  border-color: var(--cyan-dim);
+}
+
+.title-link-arrow {
+  display: inline-block;
+  font-size: 0.65em;
+  opacity: 0.6;
+  margin-left: 0.15em;
+  transform: translateY(-0.1em);
+}
+
+/* L3 — supporting description */
+.research-note {
+  margin-top: 0.6em;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink-dim);
+  max-width: 80ch;
+}
+
+.competition-meta {
+  margin-top: 0.6em;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink-dim);
+  max-width: 58ch;
+}
+
+.research-year {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  margin-bottom: 0.5em;
+}
+
+.research-authors {
+  margin-top: 0.3em;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  max-width: 80ch;
+}
+
+.research-links {
+  margin-top: 0.8em;
+  display: flex;
+  gap: var(--space-4, 1.5rem);
+}
+
+.research-link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--cyan);
+  border-bottom: 1px solid var(--cyan-dim);
+  padding-bottom: 2px;
+  transition: border-color var(--dur-med) var(--ease), transform var(--dur-med) var(--ease);
+}
+
+.research-link:hover {
+  border-color: var(--cyan);
+  transform: translateX(3px);
+}
+
+/* L3 status — a label, not a boxed badge */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  align-self: start;
+  padding-top: 0.3em;
+}
+
+.tag::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px 1px var(--cyan-dim);
+}
+
+/* L4 — a year is metadata, not a status, so it gets a plain quiet
+   label rather than the dot-marked .tag used for research status */
+.competition-year {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  align-self: start;
+  padding-top: 0.3em;
+}
+
+/* ==========================================================
+   ENTRY MEDIA — a reusable photo slot used on Research,
+   Competition and Project entries. Shows a real <img> when one
+   is provided in the data file; otherwise a deliberate abstract
+   placeholder panel, so the layout already has room reserved for
+   a photo whenever one gets added — nothing to redesign later.
+   ========================================================== */
+.entry-media {
+  flex: 0 0 132px;
+  height: 96px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-raised);
+}
+
+.entry-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.entry-media-placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(155deg, rgba(82, 227, 255, 0.1), transparent 60%),
+    linear-gradient(-25deg, rgba(167, 139, 250, 0.08), transparent 55%);
+}
+
+.entry-media-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 16px 16px;
+  mask-image: radial-gradient(circle at 30% 30%, black, transparent 75%);
+}
+
+/* ==========================================================
+   PROJECTS — text runs free in the section's whitespace; the
+   preview panel is the one deliberate "surface" in the layout,
+   not a card wrapped around everything.
+   ========================================================== */
+.project-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.6fr);
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.project-feature-text {
+  position: relative;
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--line);
+}
+
+/* L4 — small and secondary, always a step below the title it
+   labels. Rendered only when a project actually has a year (see
+   data/projects.js) so an unset field never leaves a dangling
+   empty line. */
+.project-year {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  margin-bottom: 0.6em;
+}
+
+.project-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  letter-spacing: -0.02em;
+  max-width: 20ch;
+  line-height: 1.08;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.project-desc {
+  margin-top: var(--space-3);
+  color: var(--ink-dim);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  max-width: 48ch;
+}
+
+.project-tools {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+}
+
+.project-links {
+  margin-top: var(--space-4);
+  display: flex;
+  gap: var(--space-4);
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--cyan);
+  border-bottom: 1px solid var(--cyan-dim);
+  padding-bottom: 2px;
+  transition: border-color var(--dur-med) var(--ease), transform var(--dur-med) var(--ease),
+    filter var(--dur-med) var(--ease);
+}
+
+.project-link:hover {
+  border-color: var(--cyan);
+  transform: translateX(3px);
+  filter: drop-shadow(0 0 6px var(--cyan-dim));
+}
+
+.project-visual {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-raised);
+  transition: border-color var(--dur-med) var(--ease), transform var(--dur-med) var(--ease),
+    box-shadow var(--dur-med) var(--ease);
+}
+
+.project-visual:hover {
+  border-color: var(--cyan-dim);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 60px -25px rgba(82, 227, 255, 0.25);
+}
+
+.project-visual-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.85em 1em;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.project-visual-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.project-visual-url {
+  margin-left: 0.5em;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+
+.project-visual-body {
+  flex: 1;
+  position: relative;
+  background:
+    linear-gradient(155deg, rgba(82, 227, 255, 0.1), transparent 60%),
+    linear-gradient(-25deg, rgba(167, 139, 250, 0.08), transparent 55%);
+}
+
+.project-visual-body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(circle at 30% 30%, black, transparent 75%);
+}
+
+.project-visual-image {
+  flex: 1;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-more {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.project-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: background var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease),
+    transform var(--dur-med) var(--ease);
+}
+
+.project-row:hover {
+  background: var(--surface-strong);
+  border-color: var(--cyan-dim);
+  transform: translateY(-3px);
+}
+
+.project-row-content {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.view-all {
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+  border: 1px solid var(--line);
+  padding: 0.75em 1.25em;
+  border-radius: var(--radius);
+  display: inline-block;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.view-all:hover {
+  border-color: var(--cyan);
+  color: var(--ink);
+}
+
+
+.skills-composition {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  /* cards stretch to match their row-mate rather than sizing to
+     content — a ragged bottom edge on a two-column card grid reads
+     as broken, where a little extra room inside a card does not */
+  align-items: stretch;
+}
+
+.skill-card {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: background var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease),
+    transform var(--dur-med) var(--ease);
+}
+
+/* Pointer-tracked wash — the position comes from --mx/--my, set by
+   attachPointerGlow() in js/main.js, which only runs on fine
+   pointers with motion enabled. Without those values the gradient
+   falls back to a static top-center highlight, so nothing breaks
+   on touch. z-index keeps it above the card fill but below the
+   content, which is raised to z-index 1. */
+.skill-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 0%),
+    rgba(82, 227, 255, 0.09),
+    transparent 68%
+  );
+  transition: opacity var(--dur-med) var(--ease);
+}
+
+.skill-card:hover {
+  background: var(--surface-strong);
+  border-color: var(--cyan-dim);
+  transform: translateY(-3px);
+}
+
+.skill-card:hover::after {
+  opacity: 1;
+}
+
+.skill-card-head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+/* -- shared glyph well: used by Skills and by Coursework & Lab, so
+   both new sections speak the same visual language -- */
+.glyph {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--ink-dim);
+  transition: color var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease),
+    background var(--dur-med) var(--ease);
+}
+
+.glyph svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.skill-card:hover .glyph {
+  color: var(--cyan);
+  border-color: var(--cyan-dim);
+  background: rgba(82, 227, 255, 0.06);
+}
+
+/* L2 — category name. Tier controls scale only; both tiers sit on
+   the same baseline and the same left edge. */
+.skill-cat {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0;
+  min-width: 0;
+}
+
+.skill-card[data-weight="primary"] .skill-cat {
+  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+}
+
+.skill-card[data-weight="secondary"] .skill-cat,
+.skill-card[data-weight="tertiary"] .skill-cat {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+}
+
+.skill-rule {
+  flex: 1 1 auto;
+  min-width: 1.25rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+  transition: background var(--dur-med) var(--ease);
+}
+
+.skill-card:hover .skill-rule {
+  background: linear-gradient(90deg, rgba(82, 227, 255, 0.4), transparent);
+}
+
+/* L5 — how many items are in this category. A quantity, not a
+   sequence marker, so it sits at the end of the rule rather than
+   numbering the card. */
+.skill-count {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+
+/* -- items as chips -- */
+.skill-items {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.42em 0.85em;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.skill-card[data-weight="primary"] .skill-chip {
+  font-size: 0.86rem;
+}
+
+.skill-chip:hover {
+  color: var(--ink);
+  background: rgba(82, 227, 255, 0.07);
+  border-color: var(--cyan-dim);
+  transform: translateY(-2px);
+}
+
+/* -- arrow variant: each chip carries a small terminal node, so
+   the densest categories still read as a list of discrete parts -- */
+.skill-card--arrow .skill-chip::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--cyan);
+  opacity: 0.5;
+  transition: opacity var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.skill-card--arrow .skill-chip:hover::before {
+  opacity: 1;
+  box-shadow: 0 0 8px 1px var(--cyan-dim);
+}
+
+/* -- ledger variant: a full-width strip rather than a card, which
+   is what makes the secondary tier read as secondary without
+   shrinking the type past legibility -- */
+.skill-card--ledger {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding-block: var(--space-3);
+}
+
+.skill-card--ledger .skill-rule {
+  display: none;
+}
+
+.skill-card--ledger .skill-count {
+  margin-left: auto;
+}
+
+.skill-card--ledger .skill-items {
+  margin-top: 0;
+}
+
+/* Chips fade in one after another once their card is revealed.
+   animation-fill-mode is `backwards`, not `both`, on purpose: the
+   final frame must NOT stay applied, or it would outrank the
+   hover transform below and chips would stop lifting on hover. */
+.skill-card.is-visible .skill-chip,
+.cl-side.is-visible .lab-chip {
+  animation: chip-in var(--dur-med) var(--ease) backwards;
+  animation-delay: calc(var(--chip-i, 0) * 30ms + 120ms);
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ==========================================================
+   EDUCATION — chronological, type-scale indicates recency
+   ========================================================== */
+.education-list {
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.education-list::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  bottom: 0.5em;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--cyan), var(--line) 70%, transparent);
+}
+
+.education-item {
+  position: relative;
+  padding-bottom: var(--space-4);
+}
+
+.education-item:last-child {
+  padding-bottom: 0;
+}
+
+.education-item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-4) - 3.5px);
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--cyan);
+}
+
+.education-item:not(:first-child)::before {
+  border-color: var(--ink-faint);
+}
+
+.education-level {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  margin-bottom: 0.4em;
+}
+
+.education-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.education-item:nth-child(1) .education-name {
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  color: var(--ink);
+}
+
+.education-item:nth-child(2) .education-name {
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  color: var(--ink-dim);
+}
+
+.education-item:nth-child(3) .education-name {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: var(--ink-faint);
+}
+
+.education-detail {
+  margin-top: 0.3em;
+  color: var(--ink-dim);
+  font-size: 0.95rem;
+}
+
+.education-result {
+  margin-top: 0.5em;
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--cyan);
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* ==========================================================
+   ACHIEVEMENTS
+   ========================================================== */
+.achievements-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.achievement-item {
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: background var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease);
+}
+
+.achievement-item:hover {
+  background: var(--surface-strong);
+  border-color: var(--cyan-dim);
+}
+
+.achievement-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.achievement-title a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-med) var(--ease), color var(--dur-med) var(--ease);
+}
+
+.achievement-title a:hover {
+  color: var(--cyan);
+  border-color: var(--cyan-dim);
+}
+
+.achievement-note {
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+  margin-top: 0.25em;
+}
+
+/* ==========================================================
+   COURSEWORK & LAB — two sides of the same tier of evidence,
+   deliberately given different readings so the split is legible
+   before a single word is read:
+
+     left  — coursework as a ruled academic index. Codes hold a
+             fixed column; titles run past them. Cyan accent.
+     right — lab work as clustered chips inside soft wells.
+             Violet accent, which until now was only used in the
+             background washes, so the two sides never compete.
+
+   Both sides reuse .glyph and the chip language from Skills, so
+   this reads as the same system rather than a bolted-on section.
+   ========================================================== */
+.cl-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+/* only one of the two data arrays is filled in — the side that
+   exists takes the full width instead of leaving a hole */
+.cl-split--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.cl-side {
+  position: relative;
+  min-width: 0;
+}
+
+/* The seam between the sides, matching the soft center-fading
+   treatment used between page sections rather than a hard rule. */
+.cl-side--lab::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--space-5) / -2);
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--line) 12%, var(--line) 88%, transparent);
+}
+
+.cl-split--single .cl-side--lab::before {
+  display: none;
+}
+
+.cl-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+/* each side's header glyph carries that side's accent from the
+   start; the quieter glyphs inside the lab clusters only pick the
+   accent up on hover */
+.cl-side--courses .cl-head .glyph {
+  color: var(--cyan);
+  border-color: var(--cyan-dim);
+  background: rgba(82, 227, 255, 0.05);
+}
+
+.cl-side--lab .cl-head .glyph {
+  color: var(--violet);
+  border-color: var(--violet-dim);
+  background: rgba(167, 139, 250, 0.05);
+}
+
+/* L2 — side title */
+.cl-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.cl-rule {
+  flex: 1 1 auto;
+  min-width: 1rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+.cl-count {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+
+/* -- left side: coursework index -------------------------------- */
+.cl-courses {
+  display: flex;
+  flex-direction: column;
+}
+
+.cl-course {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(4.25rem, auto) minmax(0, 1fr);
+  align-items: start;
+  gap: 0.2rem 1.1rem;
+  padding: 0.8rem 0.6rem 0.8rem 0.85rem;
+  border-bottom: 1px solid var(--line-soft);
+  border-radius: 8px;
+  transition: background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.cl-course:last-child {
+  border-bottom: 0;
+}
+
+/* a short accent bar that grows from the row's center on hover —
+   the row's own "you are here" marker, replacing a border-left
+   that would otherwise have to sit there permanently */
+.cl-course::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 2px;
+  height: 0;
+  background: var(--cyan);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  transition: height var(--dur-fast) var(--ease);
+}
+
+.cl-course:hover {
+  background: var(--surface);
+  transform: translateX(3px);
+}
+
+.cl-course:hover::before {
+  height: 60%;
+}
+
+/* When no course carries a code, the fixed column collapses to a
+   single node marker — the same 5px square the Skills chips use,
+   so the two sections keep speaking the same language. */
+.cl-courses--plain .cl-course {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.2rem 0.95rem;
+}
+
+.cl-marker {
+  width: 5px;
+  height: 5px;
+  margin-top: 0.62em;
+  border-radius: 1px;
+  background: var(--cyan);
+  opacity: 0.45;
+  transition: opacity var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.cl-course:hover .cl-marker {
+  opacity: 1;
+  box-shadow: 0 0 8px 1px var(--cyan-dim);
+}
+
+/* L5 — course code. Fixed column so every title starts at the
+   same x position, which is what makes the list read as an index
+   rather than a stack of headings. */
+.cl-code {
+  padding-top: 0.2em;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.cl-course:hover .cl-code {
+  color: var(--cyan);
+}
+
+.cl-course-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  min-width: 0;
+}
+
+/* L2 — course title */
+.cl-course-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+/* L3 — supporting line */
+.cl-course-note {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-dim);
+  max-width: 46ch;
+}
+
+/* -- right side: lab clusters ----------------------------------- */
+.cl-clusters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cl-cluster {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.018);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  transition: background var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease),
+    transform var(--dur-med) var(--ease);
+}
+
+.cl-cluster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, 0%),
+    rgba(167, 139, 250, 0.1),
+    transparent 68%
+  );
+  transition: opacity var(--dur-med) var(--ease);
+}
+
+.cl-cluster:hover {
+  background: var(--surface);
+  border-color: var(--violet-dim);
+  transform: translateY(-2px);
+}
+
+.cl-cluster:hover::after {
+  opacity: 1;
+}
+
+.cl-cluster-head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+}
+
+.cl-cluster .glyph {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+}
+
+.cl-cluster .glyph svg {
+  width: 15px;
+  height: 15px;
+}
+
+.cl-cluster:hover .glyph {
+  color: var(--violet);
+  border-color: var(--violet-dim);
+  background: rgba(167, 139, 250, 0.07);
+}
+
+/* L4 — cluster name: a label for the chips below it, kept in the
+   same quiet mono register as the section kickers */
+.cl-cluster-name {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.cl-chips {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.lab-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.38em 0.8em;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.lab-chip:hover {
+  color: var(--ink);
+  background: rgba(167, 139, 250, 0.09);
+  border-color: var(--violet-dim);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================
+   CONTACT — restrained on purpose
+   ========================================================== */
+.contact {
+  padding-block: var(--space-6) var(--space-5);
+}
+
+.contact-inner {
+  max-width: 640px;
+}
+
+/* keep this restrained — the shared .section-head spacing is
+   generous by default, tighten it here so Contact stays compact */
+.contact-inner .section-head {
+  margin-bottom: var(--space-2);
+}
+
+.contact-sentence {
+  margin-top: var(--space-2);
+  color: var(--ink-dim);
+  font-size: 1.02rem;
+  max-width: 42ch;
+}
+
+.contact-email {
+  margin-top: var(--space-4);
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.2em;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+
+.contact-email:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.contact-socials {
+  margin-top: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  position: relative;
+  transition: border-color var(--dur-med) var(--ease), transform var(--dur-med) var(--ease),
+    background var(--dur-med) var(--ease);
+}
+
+.social-icon:hover {
+  border-color: var(--cyan-dim);
+  background: var(--surface);
+  transform: translateY(-3px);
+}
+
+.social-icon img {
+  width: 17px;
+  height: 17px;
+  opacity: 0.75;
+  transition: opacity var(--dur-med) var(--ease), filter var(--dur-med) var(--ease);
+}
+
+.social-icon:hover img {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px var(--cyan-dim));
+}
+
+.social-icon-fallback {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+}
+
+.social-icon.icon-failed img {
+  display: none;
+}
+
+.social-icon.icon-failed .social-icon-fallback {
+  display: block;
+}
+
+/* tooltip label on hover — understated, not a card */
+.social-icon::after {
+  content: attr(aria-label);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.social-icon:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+.site-footer {
+  border-top: 1px solid var(--line-soft);
+  padding: var(--space-3) 0 var(--space-4);
+}
+
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.03em;
+}
+
+.footer-row a {
+  color: var(--ink-faint);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.footer-row a:hover {
+  color: var(--cyan);
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+@media (max-width: 900px) {
+  .about-composition {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .about-headline {
+    max-width: 100%;
+  }
+
+  .project-feature {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .project-feature-text {
+    order: 2;
+  }
+
+  .project-visual {
+    order: 1;
+    min-height: 180px;
+  }
+
+  /* Coursework & Lab: the vertical seam has nothing to separate
+     once the sides stack, so it's replaced by a horizontal rule
+     above the lab side — unless the lab side is alone on the page. */
+  .cl-split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .cl-side--lab::before {
+    display: none;
+  }
+
+  .cl-side--lab {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .cl-split--single .cl-side--lab {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+/* Skills holds two columns further down than the split layouts above
+   do — its chips are short and reflow cleanly, so collapsing it at
+   900px would waste half the width on a tablet. */
+@media (max-width: 760px) {
+  .skills-composition {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* One column: the half-width cards and the full-width ledger strip
+     converge on the same shape, so the ledger gets its card padding
+     back and stacks its name above the chips. The grid's own row gap
+     then does the work that .skill-items' margin-top does on the
+     other cards, keeping the head-to-chips distance identical. */
+  .skill-card--ledger {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    padding: var(--space-4);
+    gap: var(--space-3) 0;
+  }
+
+  .skill-card--ledger .skill-rule {
+    display: block;
+  }
+
+  .skill-card--ledger .skill-count {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  section {
+    padding-block: var(--space-5);
+  }
+
+  .nav {
+    top: 0.75rem;
+    width: 92%;
+    padding: 0.6rem 1.1rem;
+    /* must stack above .mobile-nav so the close (✕) toggle stays
+       clickable once the overlay is open */
+    z-index: 106;
+  }
+
+  /* the desktop inline link row is replaced by .mobile-nav below */
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 105;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: var(--space-6) var(--gutter);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--dur-med) var(--ease), opacity var(--dur-med) var(--ease);
+  }
+
+  .mobile-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .mobile-nav a {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    color: var(--ink);
+  }
+
+  body.nav-open .mobile-nav {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  body.nav-open .nav-toggle span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  body.nav-open .nav-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+  body.nav-open .nav-toggle span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+
+  .research-index,
+  .competition-index {
+    font-size: 1.2rem;
+  }
+
+  .entry-media {
+    flex: 1 1 100%;
+    height: 140px;
+  }
+
+  .project-feature-text {
+    padding-left: var(--space-2);
+  }
+
+  .contact-socials {
+    gap: 0.6rem;
+  }
+
+  .skill-card,
+  .skill-card--ledger {
+    padding: var(--space-3);
+  }
+
+  /* A fixed code column would squeeze titles to two or three words
+     per line here, so the code moves above the title. Marker-only
+     lists are exempt — a 5px square costs nothing, and dropping it
+     onto its own line would just add an empty row. */
+  .cl-courses:not(.cl-courses--plain) .cl-course {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+
+  .cl-course {
+    padding: 0.75rem 0.5rem 0.75rem 0.8rem;
+  }
+
+  .cl-code {
+    padding-top: 0;
+  }
+
+  .cl-cluster {
+    padding: var(--space-2);
+  }
+}
+
+/* ==========================================================
+   REDUCED MOTION
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================
+   CONTENT PROBLEM PANEL
+   Only created by js/main.js on localhost or with ?debug in the
+   URL — it lists mistakes in data/*.js (typos, missing photos,
+   missing PDFs). Visitors on the live site never see it.
+   ========================================================== */
+#data-problems {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 10000;
+  width: min(440px, calc(100vw - 32px));
+  max-height: 55vh;
+  overflow: auto;
+  padding: 14px 16px 12px;
+  border: 1px solid rgba(255, 143, 107, 0.45);
+  border-radius: 10px;
+  background: rgba(14, 10, 10, 0.94);
+  color: #e6e9ee;
+  font: 12.5px/1.5 var(--font-mono, ui-monospace, monospace);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+  cursor: auto;
+}
+
+#data-problems .dp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  color: #ff8f6b;
+}
+
+#data-problems .dp-close {
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#data-problems ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+#data-problems li + li {
+  margin-top: 6px;
+}
+
+#data-problems .dp-foot {
+  margin: 10px 0 0;
+  color: #7d8794;
+  font-size: 11px;
+}
